@@ -151,6 +151,7 @@ def configure() {
 }
 
 def ping() {
+	log.trace "ping called"
 	def now=new Date()
 	def tz = location.timeZone
 	def nowString = now.format("MMM/dd HH:mm",tz)
@@ -196,15 +197,19 @@ def updated() {
 
 def parse(String description) {
     description
-    def result = null
+    def result = []
     def cmd = zwave.parse(description, [0x20: 1, 0x26: 1, 0x70: 1])
-    log.debug "Parsed ${description} to ${cmd}"
+    //log.debug "Parsed ${description} to ${cmd}"
     if (cmd) {
         result = zwaveEvent(cmd)
         log.debug "zwaveEvent( ${cmd} ) returned ${result.inspect()}"
     } else {
         log.debug "Non-parsed event: ${description}"
     }
+    def now=new Date()
+    def tz = location.timeZone
+    def nowString = now.format("MMM/dd HH:mm",tz)
+    result << createEvent("name":"lastPoll", "value":nowString, displayed: false)
     return result
 }
 
@@ -228,7 +233,7 @@ def zwaveEvent(physicalgraph.zwave.commands.basicv1.BasicReport cmd)
     def tempstr = ""
     def statstr = "SAME"
 
-    log.trace "Basic report cmd.value:  ${cmd.value}"
+    //log.trace "Basic report cmd.value:  ${cmd.value}"
 
     if (cmd.value == 0) {
         //result << createEvent(name: "switch", value: "off")
@@ -251,7 +256,7 @@ def zwaveEvent(physicalgraph.zwave.commands.basicv1.BasicReport cmd)
     if (cmd.value == 0 && swstatstr == "on") { statstr = "DIFFERENT" }
     if (cmd.value == 0xFF && swstatstr == "off") { statstr = "DIFFERENT" }
         
-    log.debug "${statstr} Zwave state is ${tempstr}; device stored state is ${device.latestValue('switch')} dimmer level: ${device.latestValue('level')} "
+    //log.debug "${statstr} Zwave state is ${tempstr}; device stored state is ${device.latestValue('switch')} dimmer level: ${device.latestValue('level')} "
     return result
 }
 
