@@ -7,6 +7,7 @@
  *
  * Version History
  *
+ * 1.0.7    26 Mar 2017		Few updates  (be sure to go into each device, select settings (gear), and hit done
  * 1.0.6    29 Dec 2016		Health Check
  * 1.0.5    01 May 2016		bug fixes
  * 1.0.4    01 May 2016		Sync commands for cases where blinds respond to multiple channels (all vs. single)
@@ -36,7 +37,7 @@
  *
  */
   metadata {
-    definition (name: "Somfy Z-Wave Shades and Blinds Multi tile", namespace: "imnotbob", author: "Eric, Ash, Others") {
+    definition (name: "Somfy Z-Wave Shades and Blinds Multi tile", namespace: "E_Sch", author: "Eric, Ash, Others") {
         capability "Switch Level"
         capability "Switch"
         capability "Window Shade"
@@ -50,7 +51,9 @@
         command "OpenSync"
         command "CloseSync"
         command "TiltSync"
-        command "levelOpenClose"
+        command "levelOpenClose", [ "number" ]
+
+	attribute "lastPoll", "STRING"
 
         fingerprint deviceId: "0x1105", inClusters: "0x2C, 0x72, 0x26, 0x20, 0x25, 0x2B, 0x86"
     }
@@ -148,13 +151,17 @@ def configure() {
 }
 
 def ping() {
+	def now=new Date()
+	def tz = location.timeZone
+	def nowString = now.format("MMM/dd HH:mm",tz)
+	sendEvent("name":"lastPoll", "value":nowString, displayed: false)
 	refresh()
 }
 
 def updated() {
     log.trace "updated() called"
 
-    sendEvent(name: "checkInterval", value: 60 * 60 * 8, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID], displayed: false)
+    sendEvent(name: "checkInterval", value: 60 * 60 * 1, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID], displayed: false)
 
     def currstat = device.latestValue("level")
     def currstat1 = device.latestValue("windowShade")
