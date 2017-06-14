@@ -463,14 +463,14 @@ def setLevel(level) {
 
 def finishOpenShade() {
     sendEvent(name: "windowShade", value: "open")
-    def newlevel = 100
+    def newlevel = 99
     sendEvent(name: "level", value: newlevel)
     sendEvent(name: "switch", value: "on")
 }
 
 def finishCloseShade() {
     sendEvent(name: "windowShade", value: "closed")
-    def newlevel = 100
+    def newlevel = 0
     sendEvent(name: "level", value: newlevel)
     sendEvent(name: "switch", value: "off")
 }
