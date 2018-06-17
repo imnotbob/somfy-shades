@@ -202,7 +202,7 @@ def parse(String description) {
     //log.debug "Parsed ${description} to ${cmd}"
     if (cmd) {
         result = zwaveEvent(cmd)
-        log.debug "zwaveEvent( ${cmd} ) returned ${result.inspect()}"
+        //log.debug "zwaveEvent( ${cmd} ) returned ${result.inspect()}"
     } else {
         log.debug "Non-parsed event: ${description}"
     }
@@ -489,3 +489,4 @@ def finishPartialOpenShade() {
 //    setLevel(level)
 //    return
 //}
+
