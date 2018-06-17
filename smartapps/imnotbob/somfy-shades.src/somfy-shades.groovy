@@ -37,7 +37,7 @@
  *
  */
   metadata {
-    definition (name: "Somfy Z-Wave Shades and Blinds Multi tile", namespace: "imnotbob", author: "Eric, Ash, Others") {
+    definition (name: "somfy-shades", namespace: "imnotbob", author: "Eric, Ash, Others") {
         capability "Switch Level"
         capability "Switch"
         capability "Window Shade"
