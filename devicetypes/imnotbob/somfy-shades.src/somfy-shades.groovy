@@ -37,7 +37,7 @@
  *
  */
   metadata {
-    definition (name: "somfy-shades", namespace: "imnotbob", author: "Eric, Ash, Others") {
+    definition (name: "somfy-shades", namespace: "imnotbob", author: "Eric, Ash, Others", vid: "generic-shade") {
         capability "Switch Level"
         capability "Switch"
         capability "Window Shade"
@@ -202,7 +202,7 @@ def parse(String description) {
     //log.debug "Parsed ${description} to ${cmd}"
     if (cmd) {
         result = zwaveEvent(cmd)
-        //log.debug "zwaveEvent( ${cmd} ) returned ${result.inspect()}"
+        log.debug "zwaveEvent( ${cmd} ) returned ${result.inspect()}"
     } else {
         log.debug "Non-parsed event: ${description}"
     }
@@ -489,4 +489,3 @@ def finishPartialOpenShade() {
 //    setLevel(level)
 //    return
 //}
-
